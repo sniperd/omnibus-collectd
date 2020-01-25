@@ -15,11 +15,11 @@
 # limitations under the License.
 #
 name "protobuf-c"
-version "0.15"
+default_version "0.15"
 
 dependency "protobuf"
 
-source :url => "https://protobuf-c.googlecode.com/files/protobuf-c-#{version}.tar.gz",
+source :url => "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/protobuf-c/protobuf-c-#{version}.tar.gz",
        :md5 => "73ff0c8df50d2eee75269ad8f8c07dc8"
 
 relative_path "protobuf-c-#{version}"
@@ -38,6 +38,6 @@ build do
             "--prefix=#{install_dir}/embedded",
            ].join(" "), :env => env
 
-  command "make -j #{max_build_jobs}", :env => env
+  command "make -j #{workers}", :env => env
   command "make install", :env => env
 end

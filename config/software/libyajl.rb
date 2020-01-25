@@ -16,12 +16,12 @@
 #
 
 name "libyajl"
-version "2.0.4"
+default_version "2.0.4"
 
 dependency "cmake"
 
 source :url => "https://github.com/lloyd/yajl/archive/2.0.4.zip",
-       :md5 => "d04d02fd7e3c90250f62269e69161f84"
+       :md5 => "0199dd88db97f7f1d44b8bf311df3198"
 
 relative_path "yajl-#{version}"
 

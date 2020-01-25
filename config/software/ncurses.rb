@@ -16,31 +16,20 @@
 #
 
 name "ncurses"
-version "5.9"
+default_version "6.1"
 
 dependency "libgcc"
 
-source :url => "http://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz",
-       :md5 => "8cb9c412e5f2d96bc6f459aa8c6282a1"
+source :url => "https://invisible-mirror.net/archives/ncurses/ncurses-6.1.tar.gz",
+       :md5 => "98c889aaf8d23910d2b92d65be2e737a"
 
-relative_path "ncurses-5.9"
+relative_path "ncurses-6.1"
 
 env = {
   "LD_RUN_PATH" => "#{install_dir}/embedded/lib",
   "CFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
   "LDFLAGS" => "-L#{install_dir}/embedded/lib"
 }
-
-if platform == "solaris2"
-  env.merge!({"LDFLAGS" => "-R#{install_dir}/embedded/lib -L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include -static-libgcc"})
-  env.merge!({"LD_OPTIONS" => "-R#{install_dir}/embedded/lib"})
-  # gcc4 from opencsw fails to compile ncurses
-  env.merge!({"PATH" => "/opt/csw/gcc3/bin:/opt/csw/bin:/usr/local/bin:/usr/sfw/bin:/usr/ccs/bin:/usr/sbin:/usr/bin"})
-  env.merge!({"CC" => "/opt/csw/gcc3/bin/gcc"})
-  env.merge!({"CXX" => "/opt/csw/gcc3/bin/g++"})
-elsif platform == "smartos"
-  env.merge!({"LD_OPTIONS" => "-R#{install_dir}/embedded/lib -L#{install_dir}/embedded/lib "})
-end
 
 ########################################################################
 #
@@ -58,24 +47,6 @@ end
 ########################################################################
 
 build do
-  if platform == "smartos"
-    # SmartOS is Illumos Kernel, plus NetBSD userland with a GNU toolchain.
-    # These patches are taken from NetBSD pkgsrc and provide GCC 4.7.0
-    # compatibility:
-    # http://ftp.netbsd.org/pub/pkgsrc/current/pkgsrc/devel/ncurses/patches/
-    patch :source => 'patch-aa', :plevel => 0
-    patch :source => 'patch-ab', :plevel => 0
-    patch :source => 'patch-ac', :plevel => 0
-    patch :source => 'patch-ad', :plevel => 0
-    patch :source => 'patch-cxx_cursesf.h', :plevel => 0
-    patch :source => 'patch-cxx_cursesm.h', :plevel => 0
-
-    # Opscode patches - <someara@opscode.com>
-    # The configure script from the pristine tarball detects xopen_source_extended incorrectly.
-    # Manually working around a false positive.
-    patch :source => 'ncurses-5.9-solaris-xopen_source_extended-detection.patch', :plevel => 0
-  end
-
   # build wide-character libraries
   command(["./configure",
            "--prefix=#{install_dir}/embedded",
@@ -85,7 +56,7 @@ build do
            "--enable-overwrite",
            "--enable-widec"].join(" "),
           :env => env)
-  command "make -j #{max_build_jobs}", :env => env
+  command "make -j #{workers}", :env => env
   command "make install", :env => env
 
   # build non-wide-character libraries
@@ -103,9 +74,4 @@ build do
   # binaries, which doesn't happen to be a problem since we don't
   # utilize the ncurses binaries in private-chef (or oss chef)
   command "make install", :env => env
-
-  # Ensure embedded ncurses wins in the LD search path
-  if platform == "smartos"
-    command "ln -sf #{install_dir}/embedded/lib/libcurses.so #{install_dir}/embedded/lib/libcurses.so.1"
-  end
 end

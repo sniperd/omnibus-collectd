@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-gem 'omnibus', '~> 1.2.0'
-gem 'omnibus-software', :git => 'https://github.com/opscode/omnibus-software.git', :branch => 'master'
+gem 'omnibus', github: 'chef/omnibus'
+gem 'omnibus-software', github: 'chef/omnibus-software'

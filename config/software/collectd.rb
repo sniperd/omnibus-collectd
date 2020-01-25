@@ -16,7 +16,7 @@
 #
 
 name "collectd"
-version "5.4.0"
+default_version "5.10.0"
 
 dependency "cmake"
 dependency "libyajl"
@@ -32,11 +32,11 @@ dependency "libxml2"
 
 # AMQP plugin
 dependency "rabbitmq-c"
-dependency "percona-dev"
+#dependency "percona-dev"
 dependency "liboping"
 
-source :url => "http://collectd.org/files/collectd-#{version}.tar.gz",
-       :md5 => "d4176b3066f3b85d85343d3648ea43f6"
+source :url => "https://storage.googleapis.com/collectd-tarballs/collectd-#{version}.tar.bz2",
+       :md5 => "a8344a199b124711bdbec57f1c0b624f"
 
 relative_path "collectd-#{version}"
 

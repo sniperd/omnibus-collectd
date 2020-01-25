@@ -16,7 +16,7 @@
 #
 
 name "cmake"
-version "2.8.12"
+default_version "2.8.12"
 
 dependency "ncurses"
 

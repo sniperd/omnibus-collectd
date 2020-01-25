@@ -16,10 +16,10 @@
 #
 
 name "libgpg-error"
-version "1.12"
+default_version "1.36"
 
-source :url => "ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-#{version}.tar.bz2",
-       :md5 => "8f0eb41a344d19ac2aa9bd101dfb9ce6"
+source :url => "https://gnupg.org/ftp/gcrypt/libgpg-error/libgpg-error-#{version}.tar.bz2",
+       :md5 => "eff437f397e858a9127b76c0d87fa5ed"
 
 relative_path "libgpg-error-#{version}"
 

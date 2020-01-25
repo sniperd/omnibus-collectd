@@ -16,11 +16,14 @@
 #
 
 name "rabbitmq-c"
-version "rabbitmq-c-v0.3.0"
+default_version "rabbitmq-c-v0.10.0"
 
-dependencies ["autoconf", "automake", "libtool"]
+dependency "autoconf"
+dependency "automake"
+dependency "libtool"
 
-source :git => "https://github.com/alanxz/rabbitmq-c.git"
+source :url => "https://github.com/alanxz/rabbitmq-c/archive/v0.10.0.tar.gz",
+       :md5 => "6f09f0cb07cea221657a768bd9c7dff7"
 
 reconf_env = {"PATH" => "#{install_dir}/embedded/bin:#{ENV["PATH"]}"}
 
@@ -29,15 +32,13 @@ configure_env = {
   "CFLAGS" => "-L#{install_dir}/embedded/lib -I#{install_dir}/embedded/include",
   "LD_RUN_PATH" => "#{install_dir}/embedded/lib",
   "PATH" => "#{install_dir}/embedded/bin:#{ENV["PATH"]}",
+  "OPENSSL_ROOT_DIR" => "#{install_dir}/embedded"
 }
 
 build do
-  # autoreconf
-  command "autoreconf -i -f", :env => reconf_env
-  command "libtoolize", :env => reconf_env
-
   # configure and build
-  command "./configure --prefix=#{install_dir}/embedded", :env => configure_env
-  command "make"
-  command "make install"
+  #command "./configure --prefix=#{install_dir}/embedded", :env => configure_env
+  command "find #{install_dir}/embedded/lib"
+  command "cd rabbitmq-c-0.10.0 && #{install_dir}/embedded/bin/cmake -DCMAKE_INSTALL_PREFIX=#{install_dir}/embedded .", :env => configure_env
+  command "cd rabbitmq-c-0.10.0 && #{install_dir}/embedded/bin/cmake --build . [--config Release] --target install", :env => configure_env
 end

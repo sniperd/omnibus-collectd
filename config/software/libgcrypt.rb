@@ -16,12 +16,12 @@
 #
 
 name "libgcrypt"
-version "1.5.2"
+default_version "1.8.5"
 
 dependency "libgpg-error"
 
-source :url => "ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-#{version}.tar.bz2",
-       :md5 => "668aa1a1aae93f5fccb7eda4be403026"
+source :url => "https://www.gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-#{version}.tar.bz2",
+       :md5 => "348cc4601ca34307fc6cd6c945467743"
 
 relative_path "libgcrypt-#{version}"
 
